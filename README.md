@@ -1,103 +1,188 @@
-# Cart Super Add-On (CSAO) Rail Recommendation System
+Cart Super Add-On (CSAO) Rail Recommendation System
 
-A machine learning system for recommending add-ons in a food delivery platform, designed for hackathon submission.
+An end-to-end machine learning system that recommends contextual add-on items (e.g., desserts, beverages, sides) during a food ordering session to improve Average Order Value (AOV) and user experience.
 
-## Project Overview
+This project was developed as a hackathon solution demonstrating data simulation, modeling, evaluation, and production-level system design.
 
-This project implements an end-to-end ML pipeline for predicting and recommending add-ons (e.g., desserts, drinks) to users during their food ordering process. The system focuses on food delivery domain, incorporating city-wise behaviors, mealtime patterns, and cold start scenarios.
+🎯 Objective
 
-## Problem Formulation
+Build a scalable, real-time recommendation system that:
 
-- **Binary Classification**: Predict whether a user will accept an add-on recommendation.
-- **Ranking Problem**: Rank potential add-ons by likelihood of acceptance for personalized recommendations.
+Suggests relevant add-on items based on cart composition
 
-## Dataset
+Adapts to user behavior and contextual signals (time, city, segment)
 
-Synthetic dataset simulating realistic food delivery behavior:
+Handles cold-start users and restaurants
 
-- **1000 users** across 10 cities
-- **200 restaurants** with various cuisines
-- **2000 food items** categorized as Main, Side, Dessert, Drink
-- **10000 orders** with comprehensive features
+Operates within strict latency constraints (<300ms)
 
-### Key Features
-- User demographics: city, segment (Premium/Budget), order frequency, average order value
-- Restaurant info: cuisine, rating
-- Order context: hour of day, mealtime flags, cart size, item category
-- Target: addon_accepted (binary)
+Demonstrates measurable business impact
 
-### Realistic Simulations
-- Higher add-on acceptance during lunch/dinner hours
-- Premium users more likely to accept add-ons
-- Dessert/Drink add-ons more probable after Main items
-- Sparse history for some users
-- Cold start scenarios for new users/restaurants
+🧠 Problem Formulation
 
-## Architecture
+The task is framed as:
 
-### Feature Engineering
-- Time-based features (sin/cos encoding of hour)
-- User behavior features (premium flag)
-- Restaurant rating normalization
-- Cart context features (item categories)
-- Categorical encodings (city, cuisine, category)
+Binary Classification
+Predict whether a user will accept an add-on recommendation.
 
-### Models
-- **Baseline**: Predict average acceptance probability
-- **Logistic Regression**: Linear model for interpretability
-- **Gradient Boosting**: XGBoost for complex patterns
+Ranking Problem
+Rank candidate add-ons by likelihood of acceptance to generate Top-N recommendations.
 
-### Evaluation Metrics
-- ROC-AUC
-- Precision, Recall
-- Precision@5 (top 5% predictions)
+📊 Dataset
 
-### Cold Start Strategies
-- New user: City-level popularity fallback
-- New restaurant: Cuisine-level average fallback
-- Rule-based heuristics for edge cases
+Since no dataset was provided, a synthetic dataset was generated to simulate realistic food delivery behavior.
 
-### Production Architecture
-```
-Cart Event → Feature Store → Model API → Ranking Engine → API Response
-```
+Dataset Summary
 
-- **Inference Time**: < 300ms using optimized models and caching
-- **Scalability**: Kubernetes-based deployment for millions of requests
-- **Caching**: Redis for user features and popular recommendations
-- **Retraining**: Weekly batch updates with A/B testing
+1000 users across 10 cities
 
-## Business Impact
+200 restaurants across multiple cuisines
 
-Simulated impact based on model performance:
-- Add-on acceptance lift
-- Revenue increase from additional add-ons
-- Average Order Value (AOV) improvement
-- Cart-to-order ratio enhancement
+2000 food items categorized as Main, Side, Dessert, Drink
 
-## A/B Testing Framework
+10,000 simulated orders
 
-- Control group: Baseline recommendations
-- Treatment group: ML model recommendations
-- Guardrail metrics: Ensure no negative impact on core metrics
-- Statistical significance testing using t-tests
+Features Included
 
-## Installation & Setup
+User Features
 
-1. Clone the repository
-2. Create virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Run the main notebook:
-   ```bash
-   jupyter notebook notebooks/CSAO_Rail_Recommendation.ipynb
-   ```
+City
+
+Segment (Premium/Budget)
+
+Order frequency
+
+Average order value
+
+Restaurant Features
+
+Cuisine type
+
+Rating
+
+Cart Context
+
+Item categories
+
+Cart size
+
+Mealtime flags (breakfast/lunch/dinner)
+
+Hour of day (sin/cos encoded)
+
+Target Variable
+
+addon_accepted (binary)
+
+Realistic Behavioral Simulation
+
+Higher acceptance during lunch/dinner hours
+
+Premium users more likely to accept add-ons
+
+Desserts/drinks more likely after main dishes
+
+Sparse history users included
+
+Cold-start users and restaurants simulated
+
+⚙️ System Architecture
+Feature Engineering
+
+Temporal encoding (sin/cos hour encoding)
+
+User segmentation features
+
+Restaurant normalization
+
+Cart category context
+
+Categorical encodings
+
+Models Implemented
+
+Baseline Model – Average acceptance probability
+
+Logistic Regression – Interpretable linear model
+
+Gradient Boosting (XGBoost) – Captures nonlinear interactions
+
+Evaluation Metrics
+
+ROC-AUC
+
+Precision
+
+Recall
+
+Precision@K
+
+Ranking-based evaluation
+
+❄ Cold Start Strategy
+
+New User → City-level popularity fallback
+
+New Restaurant → Cuisine-level fallback
+
+Sparse History → Context-heavy feature reliance
+
+Rule-based backup heuristics
+
+🚀 Production Design
+Cart Event → Feature Store → Model API → Ranking Engine → Response API
+Key Properties
+
+Inference latency < 300ms
+
+Scalable deployment using containerized services
+
+Redis-based feature caching
+
+Weekly retraining pipeline
+
+A/B testing integration
+
+📈 Business Impact Simulation
+
+Projected improvements based on model lift:
+
+Increase in Add-on Acceptance Rate
+
+AOV lift
+
+Improvement in Cart-to-Order ratio
+
+Higher average items per order
+
+🧪 A/B Testing Framework
+
+Control: Baseline recommendation logic
+
+Treatment: ML-based ranking model
+
+Guardrail metrics to prevent UX degradation
+
+Statistical testing for significance
+
+📂 Project Structure
+.
+├── data/
+├── notebooks/
+├── src/
+├── requirements.txt
+└── README.md
+🔮 Future Enhancements
+
+Real-time feature store integration
+
+Contextual bandit-based exploration
+
+Deeper personalization
+
+Monitoring & drift detection
+
+Production-grade API deployment
 
 ## Project Structure
 
